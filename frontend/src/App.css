@@ -6,3 +6,11 @@
 .chart-container {
   margin: 4em;
 }
+
+.error-message {
+  color: white;
+  background-color: #f44336;
+  padding: 1em;
+  border-radius: 4px;
+  width: 100%;
+}

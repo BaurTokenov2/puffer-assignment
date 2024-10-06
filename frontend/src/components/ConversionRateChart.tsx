@@ -2,7 +2,7 @@
 import { Chart, ChartData, registerables } from 'chart.js';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { BACKEND_URL } from '../constants/constants';
+import { BACKEND_URL, ERROR_STRING } from '../constants/constants';
 
 Chart.register(...registerables);
 
@@ -14,6 +14,7 @@ interface Data {
 
 const ConversionRateChart: React.FC = () => {
   const [data, setData] = useState<Data[]>([]);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,6 +23,7 @@ const ConversionRateChart: React.FC = () => {
           response.json().then((jsonBody) => {
             const conversionRate = jsonBody.data;
             const curDate = new Date();
+            setHasError(false);
             setData((prev) => {
               if (prev.length > 0) {
                 // don't set if somehow older date response just returned
@@ -43,7 +45,7 @@ const ConversionRateChart: React.FC = () => {
           })
         )
         .catch((error) => {
-          console.error(error);
+          setHasError(true);
         });
     }, 5000);
 
@@ -66,23 +68,29 @@ const ConversionRateChart: React.FC = () => {
   }, [data]);
 
   return (
-    <Line
-      data={chartData}
-      options={{
-        plugins: {
-          title: {
-            display: true,
-            text: 'Puffer Conversion Rate',
+    <>
+      {hasError && <div className="error-message">{ERROR_STRING} </div>}
+      <Line
+        data={chartData}
+        options={{
+          plugins: {
+            title: {
+              display: true,
+              text: 'Puffer Conversion Rate',
+              font: {
+                size: 36,
+              },
+            },
           },
-        },
-        scales: {
-          y: {
-            min: 0.9,
-            max: 1.2,
+          scales: {
+            y: {
+              min: 0.9,
+              max: 1.2,
+            },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </>
   );
 };
 
