@@ -13,9 +13,12 @@ class EtherscanClient:
     url = f"{self.base_url}?module=stats&action=tokensupply&contractaddress={contract_address}&apikey={self.api_key}"
     response = requests.get(url)
     data = response.json()
-    print('data', data)
     return data['result']
   
-  def get_total_assets(self, contract_address):
-    url = ""
+  def get_contract_abi(self, contract_address):
+    url = f"{self.base_url}?module=contract&action=getabi&address={contract_address}&apikey={self.api_key}"
+    response = requests.get(url)
+    data = response.json()
+    return data['result']
+  
  
