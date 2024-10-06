@@ -2,11 +2,13 @@
 import { Chart, ChartData, registerables } from 'chart.js';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import { BACKEND_URL } from '../constants/constants';
 
 Chart.register(...registerables);
 
 interface Data {
-  timestamp: string;
+  timestamp: Date;
+  timestampString: string;
   value: number;
 }
 
@@ -15,28 +17,42 @@ const ConversionRateChart: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const curDate = new Date();
-
-      setData(
-        (prev) =>
-          [
-            ...prev,
-            {
-              timestamp: curDate.toLocaleTimeString(),
-              value: Math.floor(Math.random() * 100),
-            },
-          ].slice(-10)
-        // taking last 10 datapoints
-      );
+      fetch(BACKEND_URL)
+        .then((response) =>
+          response.json().then((jsonBody) => {
+            const conversionRate = jsonBody.data;
+            const curDate = new Date();
+            setData((prev) => {
+              if (prev.length > 0) {
+                // don't set if somehow older date response just returned
+                const lastTimestamp = prev[prev.length - 1].timestamp;
+                if (lastTimestamp > curDate) {
+                  return prev;
+                }
+              }
+              return [
+                ...prev,
+                {
+                  timestampString: curDate.toLocaleTimeString(),
+                  value: conversionRate,
+                  timestamp: curDate,
+                },
+              ].slice(-10);
+              // taking last 10 datapoints
+            });
+          })
+        )
+        .catch((error) => {
+          console.error(error);
+        });
     }, 5000);
 
     return () => clearInterval(interval);
   }, []);
-  console.log(data);
 
   const chartData: ChartData<'line'> = useMemo(() => {
     return {
-      labels: data.map((dataPoint) => dataPoint.timestamp),
+      labels: data.map((dataPoint) => dataPoint.timestampString),
       datasets: [
         {
           label: 'Conversion Rate',
@@ -57,13 +73,12 @@ const ConversionRateChart: React.FC = () => {
           title: {
             display: true,
             text: 'Puffer Conversion Rate',
-            fullSize: true,
           },
         },
         scales: {
           y: {
-            min: 0,
-            max: 100,
+            min: 0.9,
+            max: 1.2,
           },
         },
       }}
