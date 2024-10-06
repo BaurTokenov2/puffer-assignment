@@ -44,7 +44,7 @@ const ConversionRateChart: React.FC = () => {
             });
           })
         )
-        .catch((error) => {
+        .catch(() => {
           setHasError(true);
         });
     }, 5000);
@@ -67,29 +67,39 @@ const ConversionRateChart: React.FC = () => {
     };
   }, [data]);
 
+  const hasData = useMemo(() => data.length > 0, [data]);
+
   return (
     <>
       {hasError && <div className="error-message">{ERROR_STRING} </div>}
-      <Line
-        data={chartData}
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: 'Puffer Conversion Rate',
-              font: {
-                size: 36,
+      {!hasData && (
+        <div className="loaderContainer">
+          <div className="loader" />
+          Loading chart data...
+        </div>
+      )}
+      {hasData && (
+        <Line
+          data={chartData}
+          options={{
+            plugins: {
+              title: {
+                display: true,
+                text: 'Puffer Conversion Rate',
+                font: {
+                  size: 36,
+                },
               },
             },
-          },
-          scales: {
-            y: {
-              min: 0.9,
-              max: 1.2,
+            scales: {
+              y: {
+                min: 0.9,
+                max: 1.2,
+              },
             },
-          },
-        }}
-      />
+          }}
+        />
+      )}
     </>
   );
 };

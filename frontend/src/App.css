@@ -14,3 +14,34 @@
   border-radius: 4px;
   width: 100%;
 }
+
+.loaderContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5em;
+  font-size: 24px;
+}
+
+.loader {
+  width: 72px;
+  height: 72px;
+  border: 5px solid #fff;
+  border-bottom-color: #7900db;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
