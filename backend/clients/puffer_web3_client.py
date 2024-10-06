@@ -4,7 +4,6 @@ from web3 import Web3
 
 ENV_INFURA_API_KEY="INFURA_API_KEY"
 PUFFER_CONTRACT_ADDRESS = "0xD9A442856C234a39a81a089C06451EBAa4306a72"
-PUFFER_ABI = [{"inputs":[{"internalType":"address","name":"implementation","type":"address"},{"internalType":"bytes","name":"_data","type":"bytes"}],"stateMutability":"payable","type":"constructor"},{"inputs":[{"internalType":"address","name":"target","type":"address"}],"name":"AddressEmptyCode","type":"error"},{"inputs":[{"internalType":"address","name":"implementation","type":"address"}],"name":"ERC1967InvalidImplementation","type":"error"},{"inputs":[],"name":"ERC1967NonPayable","type":"error"},{"inputs":[],"name":"FailedInnerCall","type":"error"},{"anonymous":False,"inputs":[{"indexed":True,"internalType":"address","name":"implementation","type":"address"}],"name":"Upgraded","type":"event"},{"stateMutability":"payable","type":"fallback"}]
 
 class PufferWeb3Client:
   def __init__(self):

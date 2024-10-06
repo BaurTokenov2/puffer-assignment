@@ -1,20 +1,19 @@
-from flask import Flask
+from flask import Flask, jsonify
 from dotenv import load_dotenv
-from clients import puffer_web3_client, etherscan_client
+from clients import puffer_web3_client
 
 # environment setup
 load_dotenv();
-PUFFER_CONTRACT_ADDRESS = "0x4aa799c5dfc01ee7d790e3bf1a7c2257ce1dceff"
-
 
 def create_app():
   app = Flask(__name__)
-  etherscan_client_instance = etherscan_client.EtherscanClient();
-  web3_client_instance = puffer_web3_client.PufferWeb3Client();
+  puffer_client = puffer_web3_client.PufferWeb3Client();
 
-  @app.route('/')
-  def hello_world():
-    return f"Conversion rate:{web3_client_instance.get_conversion_rate()}"
+  @app.route('/conversion_rate')
+  def conversion_rate():
+    return jsonify({
+      'data': puffer_client.get_conversion_rate()
+    })
 
   return app 
 
