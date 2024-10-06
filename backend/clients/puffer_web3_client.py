@@ -28,11 +28,11 @@ class PufferWeb3Client:
     return result
   
   def get_total_assets(self):
-    result = self.token_contract.functions.totalAssets().call();
+    result = self.token_contract.functions.totalAssets().call()
     return result
   
   def get_conversion_rate(self):
-    return self.get_total_assets() / self.get_total_supply();
+    return self.get_total_assets() / self.get_total_supply()
 
     
 
