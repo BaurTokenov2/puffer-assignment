@@ -1,10 +1,10 @@
 import './App.css';
-import MyLineChart from './components/LineChart';
+import ConversionRateChart from './components/ConversionRateChart';
 
 function App() {
   return (
     <div className="chart-container">
-      <MyLineChart />
+      <ConversionRateChart />
     </div>
   );
 }

@@ -10,21 +10,23 @@ interface Data {
   value: number;
 }
 
-const MyLineChart: React.FC = () => {
+const ConversionRateChart: React.FC = () => {
   const [data, setData] = useState<Data[]>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const curDate = new Date();
 
-      setData((prev) =>
-        [
-          ...prev,
-          {
-            timestamp: curDate.toLocaleTimeString(),
-            value: Math.floor(Math.random() * 100),
-          },
-        ].slice(-10)
+      setData(
+        (prev) =>
+          [
+            ...prev,
+            {
+              timestamp: curDate.toLocaleTimeString(),
+              value: Math.floor(Math.random() * 100),
+            },
+          ].slice(-10)
+        // taking last 10 datapoints
       );
     }, 5000);
 
@@ -69,4 +71,4 @@ const MyLineChart: React.FC = () => {
   );
 };
 
-export default MyLineChart;
+export default ConversionRateChart;
